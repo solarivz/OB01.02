@@ -29,31 +29,24 @@
 import random
 
 class Store():
+    stores = []
+
     def __init__(self, name, address):
-        self.name  = name                   # название магазина.
-        self.address = address              # адрес магазина.
-        self.items = {}                     # словарь апример, {'apples': 0.5, 'bananas': 0.75}.
+        self.name = name
+        self.address = address
+        self.items = {}
+
+        # Добавляем созданный экземпляр в список всех магазинов
+        Store.stores.append(self)
 
     def add_item(self, product, price):
         self.items[product] = price
         print(f"Товар '{product}' добавлен в список по цене {price} руб.\n")
 
     def get_price(self, name):
-        """
-        Метод для получения цены товара по его названию.
-        Args:
-            name (str): Название товара.
-        Returns:
-            float or None: Цена товара, если он существует, иначе None.
-        """
         return self.items.get(name)
 
     def remove_item(self, name):
-        """
-        Метод для удаления товара из ассортимента.
-        Args:
-            name (str): Название товара.
-        """
         if name in self.items:
             del self.items[name]
             print(f"Товар '{name}' удален из ассортимента.\n")
@@ -61,12 +54,6 @@ class Store():
             print(f"Товар '{name}' отсутствует в ассортименте.\n")
 
     def update_price(self, name, new_price):
-        """
-        Метод для обновления цены товара.
-        Args:
-            name (str): Название товара.
-            new_price (float): Новая цена товара.
-        """
         if name in self.items:
             self.items[name] = new_price
             print(f"Цена товара '{name}' обновлена до {new_price} руб.\n")
@@ -74,44 +61,60 @@ class Store():
             print(f"Товар '{name}' отсутствует в ассортименте.\n")
 
 
-# Создание экземпляра класса и добавление ассортимента в магазины
-
-# Мангазин №1
-store_product1 = Store('Ягодка', 'г.Иваново, ул.Солнечная д.1')
-# Список названий продуктов
+# Создаем экземпляры класса Store и добавляем товары
+store1 = Store('Ягодка', 'г.Иваново, ул.Солнечная д.1')
 product_names = ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай", "Масло", "Сахар", "Мясо", "Рыба"]
-# Добавление 10 продуктов в словарь
-for i in product_names:
-    price = round(random.uniform(10.0, 100.0), 2)  # Генерация случайной цены от 10 до 100
-    store_product1.add_item(i, price)
+for product in product_names:
+    price = round(random.uniform(10.0, 100.0), 2)
+    store1.add_item(product, price)
 
-# Магазин №2
-store_produkt2 = Store('Хлебушек', 'г.Иваново, ул.Дальняя д.26')
-store_produkt2.add_item('Бородинский хлеб 250 грамм', 46.50)
-store_produkt2.add_item('Дарницкий хлеб 350 грамм', 50.50)
-store_produkt2.add_item('Славянский хлеб 500 грамм', 60.45)
-store_produkt2.add_item('Кекс с творогом 150 грамм', 25.50)
+store2 = Store('Хлебушек', 'г.Иваново, ул.Дальняя д.26')
+store2.add_item('Бородинский хлеб 250 грамм', 46.50)
+store2.add_item('Дарницкий хлеб 350 грамм', 50.50)
+store2.add_item('Славянский хлеб 500 грамм', 60.45)
+store2.add_item('Кекс с творогом 150 грамм', 25.50)
 
-# Магазин №3
-store_produkt3 = Store('Все для дома','г.Иваново, пр-кт.Строителей д.101')
-# Список названий продуктов
+store3 = Store('Все для дома', 'г.Иваново, пр-кт.Строителей д.101')
 product_names = ["Цемент", "Кирпич", "Песок", "Щебень", "Строительный раствор",
     "Гипсокартон", "Краска", "Плитка", "Дверь", "Ламинат"]
-# Добавление 10 продуктов в словарь
-for i in product_names:
-    price = round(random.uniform(60.0, 800.0), 2)  # Генерация случайной цены от 60 до 800
-    store_produkt3.add_item(i, price)
+for product in product_names:
+    price = round(random.uniform(60.0, 800.0), 2)
+    store3.add_item(product, price)
 
 
-# Получим цену на конкретное наименование продукта в магазине
-#Какой магазин?
-m = input('Выбери название магазина:')
-#Какой интересует продукт?
-i = input('Выбери название товара:')
-print(store_product1.get_price(i))
+# Работа с методами и функциями
+# Печать ассортимента всех магазинов
+print("Ассортимент всех магазинов:")
+for store in Store.stores:
+    print(f"Магазин: {store.name}")
+    print("Ассортимент:")
+    for product, price in store.items.items():
+        print(f"Товар: {product}, Цена: {price} руб.")
+    print()
 
-# Удаление товара
-store_product1.remove_item("Яблоки")
+# Выводим список всех созданных магазинов
+print("Список магазинов:")
+for s, store in enumerate(Store.stores, 1):
+    print(s, store.name)
 
-# Обновление цены товара
-store_produkt3.update_price("Кирпич", 250.0)
+# Получаем цену товара в конкретном магазине
+store_name = input("Введите название магазина: ")
+
+
+product_name = input("Введите название товара: ")
+price = None
+for store in Store.stores:
+    if store.name == store_name:
+        price = store.get_price(product_name)
+        break
+
+if price is not None:
+    print(f"Цена товара '{product_name}' в магазине '{store_name}': {price} руб.")
+else:
+    print(f"Товар '{product_name}' отсутствует в магазине '{store_name}'.")
+
+# Удаляем товар из одного из магазинов
+store1.remove_item("Яблоки")
+
+# Обновляем цену товара в одном из магазинов
+store3.update_price("Кирпич", 250.0)
