@@ -38,6 +38,42 @@ class Store():
         self.items[product] = price
         print(f"Товар '{product}' добавлен в список по цене {price} руб.\n")
 
+    def get_price(self, name):
+        """
+        Метод для получения цены товара по его названию.
+        Args:
+            name (str): Название товара.
+        Returns:
+            float or None: Цена товара, если он существует, иначе None.
+        """
+        return self.items.get(name)
+
+    def remove_item(self, name):
+        """
+        Метод для удаления товара из ассортимента.
+        Args:
+            name (str): Название товара.
+        """
+        if name in self.items:
+            del self.items[name]
+            print(f"Товар '{name}' удален из ассортимента.\n")
+        else:
+            print(f"Товар '{name}' отсутствует в ассортименте.\n")
+
+    def update_price(self, name, new_price):
+        """
+        Метод для обновления цены товара.
+        Args:
+            name (str): Название товара.
+            new_price (float): Новая цена товара.
+        """
+        if name in self.items:
+            self.items[name] = new_price
+            print(f"Цена товара '{name}' обновлена до {new_price} руб.\n")
+        else:
+            print(f"Товар '{name}' отсутствует в ассортименте.\n")
+
+
 # Создание экземпляра класса и добавление ассортимента в магазины
 
 # Мангазин №1
@@ -65,3 +101,17 @@ product_names = ["Цемент", "Кирпич", "Песок", "Щебень", "
 for i in product_names:
     price = round(random.uniform(60.0, 800.0), 2)  # Генерация случайной цены от 60 до 800
     store_produkt3.add_item(i, price)
+
+
+# Получим цену на конкретное наименование продукта в магазине
+#Какой магазин?
+m = input('Выбери название магазина:')
+#Какой интересует продукт?
+i = input('Выбери название товара:')
+print(store_product1.get_price(i))
+
+# Удаление товара
+store_product1.remove_item("Яблоки")
+
+# Обновление цены товара
+store_produkt3.update_price("Кирпич", 250.0)
